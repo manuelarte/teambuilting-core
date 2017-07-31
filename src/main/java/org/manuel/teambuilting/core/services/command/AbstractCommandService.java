@@ -1,7 +1,7 @@
 package org.manuel.teambuilting.core.services.command;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 
@@ -12,12 +12,12 @@ import java.io.Serializable;
  * @since 4-4-2017
  */
 @AllArgsConstructor
-public class AbstractCommandService<Entity, ID extends Serializable, Repository extends CrudRepository<Entity, ID>> implements BaseCommandService<Entity, ID> {
+public class AbstractCommandService<Entity, ID extends Serializable, Repository extends JpaRepository<Entity, ID>> implements BaseCommandService<Entity, ID> {
 
 	protected final Repository repository;
 
 	@Override
-	@PreAuthorize("hasAuthority('user') or hasAuthority('admin')")
+	@PreAuthorize("isAuthenticated()")
 	public Entity save(final Entity entity) {
 		Assert.notNull(entity, "The entity cannot be null");
 		beforeSave(entity);
@@ -27,7 +27,7 @@ public class AbstractCommandService<Entity, ID extends Serializable, Repository 
 	}
 
 	@Override
-	@PreAuthorize("hasAuthority('user') or hasAuthority('admin')")
+	@PreAuthorize("isAuthenticated()")
 	public void delete(final ID id) {
 		Assert.notNull(id, "The id cannot be null");
 		beforeDelete(id);

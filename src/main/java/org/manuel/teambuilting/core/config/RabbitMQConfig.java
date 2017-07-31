@@ -12,12 +12,14 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author Manuel Doncel Martos
  * @since 07/12/2016.
  */
 @Configuration
+@PropertySource("classpath:config/messaging.properties")
 public class RabbitMQConfig  {
 
 	private final String exchange;
@@ -38,13 +40,6 @@ public class RabbitMQConfig  {
     private void declareExchange() {
         rabbitAdmin.declareExchange(new TopicExchange(exchange, durable, autodelete));
     }
-
-    @Bean
-	public ObjectMapper objectMapper() {
-		final ObjectMapper jsonObjectMapper = new ObjectMapper().findAndRegisterModules();
-		jsonObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
-		return jsonObjectMapper;
-	}
 
     @Bean(name = "eventMessageConverter")
     public MessageConverter messageConverter(final ObjectMapper jsonObjectMapper) {
