@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @PropertySource("classpath:teambuilting-core-application.properties")
-@Import({ RabbitMQConfig.class, SecurityConfig.class, WebConfig.class})
+@Import({ CoreConfig.class})
 @EntityScan
 /**
  * @author Manuel Doncel Martos
